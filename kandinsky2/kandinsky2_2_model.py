@@ -21,24 +21,24 @@ class Kandinsky2_2:
     ):
         self.device = device
         self.task_type = task_type
-        self.image_encoder = CLIPVisionModelWithProjection.from_pretrained('kandinsky-community/kandinsky-2-2-prior', subfolder='image_encoder').to(torch.float16).to(self.device)
+        self.image_encoder = CLIPVisionModelWithProjection.from_pretrained('kandinsky-community/kandinsky-2-2-prior', subfolder='image_encoder').to(torch.float32).to(self.device)
         if task_type == "text2img":
-            self.unet = UNet2DConditionModel.from_pretrained('kandinsky-community/kandinsky-2-2-decoder', subfolder='unet').to(torch.float16).to(self.device)
-            self.prior = KandinskyV22PriorPipeline.from_pretrained('kandinsky-community/kandinsky-2-2-prior', image_encoder=self.image_encoder, torch_dtype=torch.float16)
+            self.unet = UNet2DConditionModel.from_pretrained('kandinsky-community/kandinsky-2-2-decoder', subfolder='unet').to(torch.float32).to(self.device)
+            self.prior = KandinskyV22PriorPipeline.from_pretrained('kandinsky-community/kandinsky-2-2-prior', image_encoder=self.image_encoder,)
             self.prior = self.prior.to(self.device)
-            self.decoder = KandinskyV22Pipeline.from_pretrained('kandinsky-community/kandinsky-2-2-decoder', unet=self.unet, torch_dtype=torch.float16)
+            self.decoder = KandinskyV22Pipeline.from_pretrained('kandinsky-community/kandinsky-2-2-decoder', unet=self.unet,)
             self.decoder = self.decoder.to(self.device)
         elif task_type == "inpainting":
-            self.unet = UNet2DConditionModel.from_pretrained('kandinsky-community/kandinsky-2-2-decoder-inpaint', subfolder='unet').to(torch.float16).to(self.device)
-            self.prior = KandinskyV22PriorPipeline.from_pretrained('kandinsky-community/kandinsky-2-2-prior', image_encoder=self.image_encoder, torch_dtype=torch.float16)
+            self.unet = UNet2DConditionModel.from_pretrained('kandinsky-community/kandinsky-2-2-decoder-inpaint', subfolder='unet').to(torch.float32).to(self.device)
+            self.prior = KandinskyV22PriorPipeline.from_pretrained('kandinsky-community/kandinsky-2-2-prior', image_encoder=self.image_encoder,)
             self.prior = self.prior.to(self.device)
-            self.decoder = KandinskyV22InpaintPipeline.from_pretrained('kandinsky-community/kandinsky-2-2-decoder-inpaint', unet=self.unet, torch_dtype=torch.float16)
+            self.decoder = KandinskyV22InpaintPipeline.from_pretrained('kandinsky-community/kandinsky-2-2-decoder-inpaint', unet=self.unet,)
             self.decoder = self.decoder.to(self.device)
         elif task_type == "img2img":
-            self.unet = UNet2DConditionModel.from_pretrained('kandinsky-community/kandinsky-2-2-decoder', subfolder='unet').to(torch.float16).to(self.device)
-            self.prior = KandinskyV22PriorPipeline.from_pretrained('kandinsky-community/kandinsky-2-2-prior', image_encoder=self.image_encoder, torch_dtype=torch.float16)
+            self.unet = UNet2DConditionModel.from_pretrained('kandinsky-community/kandinsky-2-2-decoder', subfolder='unet').to(torch.float32).to(self.device)
+            self.prior = KandinskyV22PriorPipeline.from_pretrained('kandinsky-community/kandinsky-2-2-prior', image_encoder=self.image_encoder,)
             self.prior = self.prior.to(self.device)
-            self.decoder = KandinskyV22Img2ImgPipeline.from_pretrained('kandinsky-community/kandinsky-2-2-decoder', unet=self.unet, torch_dtype=torch.float16)
+            self.decoder = KandinskyV22Img2ImgPipeline.from_pretrained('kandinsky-community/kandinsky-2-2-decoder', unet=self.unet,)
             self.decoder = self.decoder.to(self.device)
         else:
             raise ValueError("Only text2img, img2img, inpainting is available")
